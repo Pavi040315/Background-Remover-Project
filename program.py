@@ -1,5 +1,7 @@
 # program about background remover from webcam feed using face recognition
 
+# add comments later
+# add functionality to change background from a set of images
 #add filters and effects later
 
 import face_recognition
@@ -21,17 +23,26 @@ background_img = cv2.imread("sunset.jpg")
 background_img = cv2.resize(background_img, (640, 480))
 
 
+file = os.makedirs("Captured_Images", exist_ok=True)
+csv_file = os.makedirs(csv_file := "CSV Files", exist_ok=True)
+csv_file = open("CSV Files/capture_log.csv", "a")
+csv_file.write("timestamp,filename\n")
+
 while True:
     _, frame = capture.read()
 
-    remBG = segmentor.removeBG(frame, background_img, 0.9)
-    imageStack = cvzone.stackImages([frame, remBG], 2, 1)
+    remBG = segmentor.removeBG(frame, background_img, 0.9) #changed background
+    imageStack = cvzone.stackImages([frame, remBG], 2, 1) #both side by side
 
     cv2.imshow("BG Remover", imageStack)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):   
         break
 
+
+cv2.imwrite(f"Captured_Images/frame_{datetime.now().strftime('%Y%m%d_%H%M%S')}.jpg", remBG) 
+csv_file.write(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')},frame_{datetime.now().strftime('%Y%m%d_%H%M%S')}.jpg\n")
+csv_file.close()
 
 capture.release()
 cv2.destroyAllWindows()
