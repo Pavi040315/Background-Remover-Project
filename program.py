@@ -17,16 +17,19 @@ capture = cv2.VideoCapture(0)
 capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
 capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
+
 segmentor = SelfiSegmentation()
+
 
 background_img = cv2.imread("sunset.jpg")
 background_img = cv2.resize(background_img, (640, 480))
 
 
-file = os.makedirs("Captured_Images", exist_ok=True)
-csv_file = os.makedirs(csv_file := "CSV Files", exist_ok=True)
-csv_file = open("CSV Files/capture_log.csv", "a")
-csv_file.write("timestamp,filename\n")
+captured_images_folder = os.makedirs("Captured_Images")
+csv_folder = os.makedirs("CSV Files", )
+csv_folder = open("CSV Files/capture_log.csv", "a")
+csv_folder.write("timestamp,filename\n")
+
 
 while True:
     _, frame = capture.read()
@@ -41,8 +44,8 @@ while True:
 
 
 cv2.imwrite(f"Captured_Images/frame_{datetime.now().strftime('%Y%m%d_%H%M%S')}.jpg", remBG) 
-csv_file.write(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')},frame_{datetime.now().strftime('%Y%m%d_%H%M%S')}.jpg\n")
-csv_file.close()
+csv_folder.write(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')},frame_{datetime.now().strftime('%Y%m%d_%H%M%S')}.jpg\n")
+csv_folder.close()
 
 capture.release()
 cv2.destroyAllWindows()
