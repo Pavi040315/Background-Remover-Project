@@ -25,8 +25,8 @@ background_img = cv2.imread("sunset.jpg")
 background_img = cv2.resize(background_img, (640, 480))
 
 
-captured_images_folder = os.makedirs("Captured_Images")
-csv_folder = os.makedirs("CSV Files", )
+captured_images_folder = os.makedirs("Captured_Images", exist_ok=True)
+csv_folder = os.makedirs("CSV Files", exist_ok=True)
 csv_folder = open("CSV Files/capture_log.csv", "a")
 csv_folder.write("timestamp,filename\n")
 
@@ -34,7 +34,7 @@ csv_folder.write("timestamp,filename\n")
 while True:
     _, frame = capture.read()
 
-    remBG = segmentor.removeBG(frame, background_img, 0.9) #changed background
+    remBG = segmentor.removeBG(frame, background_img, 0.8) #changed background
     imageStack = cvzone.stackImages([frame, remBG], 2, 1) #both side by side
 
     cv2.imshow("BG Remover", imageStack)
@@ -46,6 +46,7 @@ while True:
 cv2.imwrite(f"Captured_Images/frame_{datetime.now().strftime('%Y%m%d_%H%M%S')}.jpg", remBG) 
 csv_folder.write(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')},frame_{datetime.now().strftime('%Y%m%d_%H%M%S')}.jpg\n")
 csv_folder.close()
+
 
 capture.release()
 cv2.destroyAllWindows()
