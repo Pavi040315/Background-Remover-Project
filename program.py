@@ -4,7 +4,7 @@
 # add functionality to change background from a set of images
 #add filters and effects later
 
-import face_recognition
+#import face_recognition
 import cv2 #######
 import cvzone
 from cvzone.SelfiSegmentationModule import SelfiSegmentation   
