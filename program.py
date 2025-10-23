@@ -1,6 +1,5 @@
 # program about background remover from webcam feed using face recognition
 
-# add comments later
 
 import cv2 #######
 import cvzone
