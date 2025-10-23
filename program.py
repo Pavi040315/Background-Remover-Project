@@ -10,24 +10,30 @@ import os
 from datetime import datetime
 
 
+# Initialize webcam
 capture = cv2.VideoCapture(0)
 capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
 capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
 
+# Initialize Selfie Segmentation model (for background removal)
 segmentor = SelfiSegmentation()
 
 
+# Create necessary folders 
 backgrounds_folder = os.makedirs("Backgrounds", exist_ok=True)
 captured_images_folder = os.makedirs("Captured_Images", exist_ok=True)
 csv_folder = os.makedirs("CSV Files", exist_ok=True)
+
+
+# Open CSV file to log captured images
 csv_folder = open("CSV Files/capture_log.csv", "a")
 csv_folder.write("timestamp,filename\n")
 background_files = ["sunset.jpg", "beach.jpg", "mountains.jpg", "city.jpg"]
 bg_index = 0
 
 
-# Refresh the list of background files from the "Backgrounds" folder
+# Refresh the list of background files 
 background_files = [
      f for f in os.listdir("Backgrounds")
         if os.path.isfile(os.path.join("Backgrounds", f))
@@ -50,7 +56,7 @@ while add_background == 'Y':
     add_background = input("Do you want to add another background image? (Y/N):").upper()
 
 
-
+# Background selection
 bg_selection = print("Available backgrounds in 'Backgrounds' folder:")
 for i, bg in enumerate(background_files, start=1):
         print(f"{i}. {bg}")
@@ -61,13 +67,12 @@ if background_filename.isdigit():
 print(f"Select background: {background_filename}")
 
 
-
-
-
+# Load background image
 background_img = cv2.imread(f"Backgrounds/{background_filename}")
 background_img = cv2.resize(background_img, (640, 480))
 
 
+# Main loop
 while True:
 
     _, frame = capture.read()
@@ -86,14 +91,10 @@ while True:
         csv_folder.write(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')},{snapshot_url},{background_files[bg_index]}\n")
         print(f"Saved: {filename} with background {background_files[bg_index]}")
 
-    elif key == ord('q'):   
+    elif key == ord('q'):
         break
 
 
-#cv2.imwrite(f"Captured_Images/frame_{datetime.now().strftime('%Y%m%d_%H%M%S')}.jpg", remBG) 
-#csv_folder.write(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')},frame_{datetime.now().strftime('%Y%m%d_%H%M%S')}.jpg\n")
 csv_folder.close()
-
-
 capture.release()
 cv2.destroyAllWindows()
