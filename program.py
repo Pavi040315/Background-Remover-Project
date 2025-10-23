@@ -2,14 +2,12 @@
 
 # add comments later
 
-#import face_recognition
 import cv2 #######
 import cvzone
 from cvzone.SelfiSegmentationModule import SelfiSegmentation   
 import numpy as np
 import os
 from datetime import datetime
-
 
 
 capture = cv2.VideoCapture(0)
@@ -53,8 +51,6 @@ while add_background == 'Y':
 
 
 
-
-
 bg_selection = print("Available backgrounds in 'Backgrounds' folder:")
 for i, bg in enumerate(background_files, start=1):
         print(f"{i}. {bg}")
@@ -86,15 +82,16 @@ while True:
         filename = f"frame_{datetime.now().strftime('%Y%m%d_%H%M%S')}.jpg"
         filepath = os.path.join("Captured_Images", filename)
         cv2.imwrite(filepath, remBG)
-        csv_folder.write(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')},{filename},{background_files[bg_index]}\n")
+        snapshot_url = f"file:///{os.path.abspath(filepath).replace(os.sep, '/')}"
+        csv_folder.write(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')},{snapshot_url},{background_files[bg_index]}\n")
         print(f"Saved: {filename} with background {background_files[bg_index]}")
 
     elif key == ord('q'):   
         break
 
 
-cv2.imwrite(f"Captured_Images/frame_{datetime.now().strftime('%Y%m%d_%H%M%S')}.jpg", remBG) 
-csv_folder.write(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')},frame_{datetime.now().strftime('%Y%m%d_%H%M%S')}.jpg\n")
+#cv2.imwrite(f"Captured_Images/frame_{datetime.now().strftime('%Y%m%d_%H%M%S')}.jpg", remBG) 
+#csv_folder.write(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')},frame_{datetime.now().strftime('%Y%m%d_%H%M%S')}.jpg\n")
 csv_folder.close()
 
 
