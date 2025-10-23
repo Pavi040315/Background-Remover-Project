@@ -56,14 +56,15 @@ while add_background == 'Y':
 
 
 # Background selection
-bg_selection = print("Available backgrounds in 'Backgrounds' folder:")
+bg_selection = print("\nAvailable backgrounds in 'Backgrounds' folder:")
+print("Press 's' to snapshot & Press 'q' to quit")
 for i, bg in enumerate(background_files, start=1):
         print(f"{i}. {bg}")
-background_filename = input("Enter the background image filename (with extension) to use from 'Backgrounds' folder: ")
+background_filename = input("\nEnter the background image number: ")
 if background_filename.isdigit():
     bg_index = int(background_filename) - 1
     background_filename = background_files[bg_index]
-print(f"Select background: {background_filename}")
+print(f"Selected background: {background_filename}")
 
 
 # Load background image
